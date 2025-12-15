@@ -1,0 +1,41 @@
+{
+    // Visit https://aka.ms/tsconfig to read more about this file
+    "compilerOptions": {
+        // --- CẤU HÌNH ES MODULES (NODENEXT) ---
+        // (Đây là phần quan trọng nhất để sửa lỗi của bạn)
+        "module": "NodeNext", // Biên dịch theo tiêu chuẩn ESM của Node.js
+        "moduleResolution": "NodeNext", // Cách phân giải module mới nhất
+        "target": "ES2022", // Target version cho JavaScript output
+        "esModuleInterop": true, // Bật tính năng tương thích để import các thư viện CommonJS cũ (như Express) dễ dàng hơn.
+        "verbatimModuleSyntax": true, // Giữ lại (Tốt, vì giờ đã đồng bộ với type: module)
+        "isolatedModules": true, // (Tốt cho các công cụ xây dựng)
+        "moduleDetection": "force",
+
+        // --- CẤU HÌNH THƯ MỤC & FILE ---
+        "rootDir": "./src", // Đặt thư mục gốc chứa source code
+        "outDir": "./dist", // Đặt thư mục output cho file biên dịch (.js)
+
+        // --- KHAI BÁO KIỂU VÀ THƯ VIỆN ---
+        "types": ["node"], // Bổ sung kiểu cho môi trường Node.js
+        "lib": ["es2022"], // Bổ sung thư viện cho môi trường Node.js
+
+        // --- OUTPUT VÀ DEBUG ---
+        "sourceMap": true,
+        "declaration": true,
+        "declarationMap": true,
+
+        // --- CÁC TÙY CHỌN KHUYẾN NGHỊ (ĐÃ CÓ SẴN) ---
+        "strict": true,
+        "noUncheckedIndexedAccess": true,
+        "exactOptionalPropertyTypes": true,
+        "noUncheckedSideEffectImports": true,
+        "skipLibCheck": true,
+
+        // --- ĐÃ TẮT CHO BACKEND ---
+        "jsx": "react-jsx" // Đã tắt (comment) vì đây là cấu hình cho Server/Backend
+    },
+
+    // Các file và thư mục cần được biên dịch
+    "include": ["src/**/*"],
+    "exclude": ["node_modules", "dist"]
+}

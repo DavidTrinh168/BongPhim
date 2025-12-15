@@ -1,0 +1,27 @@
+# THƯ MỤC CHUNG
+# Node modules cho cả server và webclient
+node_modules
+
+# Build artifacts
+dist
+build
+.next
+
+# THÔNG TIN BÍ MẬT/CẤU HÌNH CỤC BỘ
+.env
+.env.local
+.env.development.local
+
+# VISUAL STUDIO CODE
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# THƯ MỤC CỤ THỂ CỦA PROJECT CON
+# Backend
+server/dist
+
+# Frontend (đã bị bao gồm trong .next ở trên, nhưng liệt kê thêm cho chắc chắn)
+webclient/out
