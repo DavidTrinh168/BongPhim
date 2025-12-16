@@ -34,6 +34,10 @@
         // --- ĐÃ TẮT CHO BACKEND ---
         "jsx": "react-jsx" // Đã tắt (comment) vì đây là cấu hình cho Server/Backend
     },
+    "ts-node": {
+    "esm": true, // Báo cho ts-node sử dụng cơ chế ESM
+    "experimentalSpecifierResolution": "node" // Tùy chọn, giúp độ phân giải module tốt hơn
+    },
 
     // Các file và thư mục cần được biên dịch
     "include": ["src/**/*"],
