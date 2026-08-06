@@ -1,0 +1,21 @@
+BR-01: Khởi tạo và Cập nhật Phim (Create/Update Rules)
+    •	Title & Slug:
+        o	title là duy nhất (Unique), không chứa ký tự khoảng trắng thừa.
+        o	slug phải được tự động tạo dạng URL-friendly (VD: "Bố Già" $\rightarrow$ "bo-gia"). Nếu trùng, tự động append chuỗi unique/nanoid (VD: "bo-gia-x89a").
+    •	Content Type & Duration:
+        o	Nếu content_type === 'movie': duration là bắt buộc và phải $> 0$.
+        o	Nếu content_type === 'series': duration là tùy chọn (nếu có phải $> 0$).
+    •	Năm phát hành (year):
+        o	Giá trị phải nằm trong khoảng: $1888 \le \text{year} \le (\text{Năm hiện tại} + 2)$.
+    •	Định dạng URL:
+        o	poster_url và trailer_url (nếu có) phải đúng định dạng URI/URL hợp lệ.
+    •	Xác thực Liên kết (Foreign Key Checks):
+        o	Tất cả ObjectId truyền vào genres, crew, countries phải thực sự tồn tại trong Database. Trả về lỗi 400 Bad Request kèm danh sách ID không hợp lệ nếu có.
+BR-02: Truy vấn & Lọc Dữ liệu (Query & Filtering Rules)
+    •	Phân trang (Pagination): Mọi API lấy danh sách đều phải phân trang bắt buộc (page mặc định 1, limit mặc định 10, tối đa 50).
+    •	Lọc đa điều kiện (Multi-filter): Hỗ trợ lọc kết hợp: content_type, year, genres (hỗ trợ lọc theo nhiều thể loại), countries, is_trending.
+    •	Sắp xếp (Sorting): Cho phép sắp xếp linh hoạt theo: created_at (mới nhất), rating (cao nhất), year (năm phát hành), views (nước phát triển sau này).
+BR-03: Xóa Phim (Deletion & Cascade Rules)
+    •	Xóa mềm (Soft Delete) vs Xóa cứng (Hard Delete):
+        o	Khuyến khích triển khai xóa mềm (thêm trường is_deleted: boolean).
+        o	Nếu Hard Delete phim: Tầng Service phải kích hoạt cascade cleanup — xóa toàn bộ các Episode có movieId liên quan, đồng thời dọn dẹp các Bookmark/History/Rating của người dùng đối với phim đó.

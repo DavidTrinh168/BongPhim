@@ -1,0 +1,134 @@
+Dưới đây là các Middleware quan trọng nhất được phân loại theo từng nhóm chức năng mà bất kỳ dự án thực tế nào cũng cần có:
+
+1. Nhóm Bảo mật (Security) 🛡️
+  Đây là lớp phòng thủ cơ bản nhất cho API của bạn trước các cuộc tấn công phổ biến trên Internet.
+
+  helmet:
+
+  Tác dụng: Tự động thiết lập các HTTP Header liên quan đến bảo mật (XSS, Clickjacking, MIME sniffing, hide X-Powered-By: Express...).
+
+  Cài đặt: npm install helmet
+
+  cors:
+
+  Tác dụng: Cho phép/chặn các tên miền (Frontend) được quyền gọi API tới Backend. Tránh bị khai thác Cross-Origin Resource Sharing.
+
+  Cài đặt: npm install cors & npm install --save-dev @types/cors
+
+  express-rate-limit:
+
+  Tác dụng: Giới hạn số lượng Request từ một IP trong một khoảng thời gian. Chống tấn công Brute-force (dò mật khẩu) hoặc DDoS/Spam API.
+
+  Cài đặt: npm install express-rate-limit
+
+2. Nhóm Xử lý & Chuẩn hóa Dữ liệu (Request Parsing & Validation) 📥
+  Giúp bạn xử lý và làm sạch dữ liệu đi vào hệ thống.
+
+  express.json() & express.urlencoded() (Built-in của Express):
+
+  Tác dụng: Đọc và parse dữ liệu JSON/Form gửi từ req.body.
+
+  Validation Middleware (Custom Middleware bằng Zod / Joi):
+
+  Tác dụng: Chặn ngay từ cửa ngõ các Request gửi thiếu trường, sai kiểu dữ liệu trước khi đi tới Controller/Service (như chúng ta vừa thảo luận).
+
+  Thư viện đề xuất: zod
+
+3. Nhóm Ghi Log & Theo dõi (Logging & Observability) 🔍
+  Giúp lập trình viên debug khi phát triển và theo dõi trạng thái hệ thống khi chạy thực tế (Production).
+
+  morgan:
+
+  Tác dụng: Ghi log tự động mỗi Request đi vào terminal (Ví dụ: GET /api/movies 200 45ms - 1024 bytes). Rất hữu ích khi phát triển ở môi trường Local.
+
+  Cài đặt: npm install morgan & npm install --save-dev @types/morgan
+
+  winston / pino (Chuyên sâu):
+
+  Tác dụng: Hệ thống ghi log chuyên nghiệp ra file (như error.log, combined.log) hoặc đẩy về các dịch vụ theo dõi log tập trung.
+
+4. Nhóm Tối ưu Hiệu năng (Performance) ⚡
+  compression:
+
+  Tác dụng: Nén các phản hồi HTTP (Gzip/Brotli) trước khi gửi về cho Frontend, giúp giảm dung lượng truyền tải qua mạng (đặc biệt khi trả về danh sách phim dạng JSON lớn), tăng tốc độ tải trang.
+
+  Cài đặt: npm install compression & npm install --save-dev @types/compression
+
+5. Nhóm Quản lý Lỗi Tập trung (Global Error Handling) 💥
+  Global Error Handler Middleware (Custom):
+
+  Tác dụng: Bắt tất cả các lỗi không mong muốn (500 Internal Server Error, Lỗi DB, Lỗi Logic...) phát sinh trong ứng dụng. Tránh việc server bị treo (crash) và chuẩn hóa cấu trúc lỗi trả về cho Frontend.
+
+
+
+MẪU----------------------
+// server/src/index.ts
+import 'dotenv/config';
+import express from 'express';
+import helmet from 'helmet';
+import cors from 'cors';
+import compression from 'compression';
+import morgan from 'morgan';
+import rateLimit from 'express-rate-limit';
+
+const app = express();
+
+// 1. Set Security HTTP Headers
+app.use(helmet());
+
+// 2. Enable CORS
+app.use(cors({
+  origin: process.env.CLIENT_URL || 'http://localhost:3000', // Chỉ cho phép Frontend của bạn gọi API
+  credentials: true
+}));
+
+// 3. Limit Requests (Rate Limiting)
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 phút
+  max: 100, // Tối đa 100 requests mỗi IP trong 15 phút
+  message: 'Too many requests from this IP, please try again later.'
+});
+app.use('/api', limiter);
+
+// 4. Request Body Parsers & Compression
+app.use(express.json({ limit: '10kb' })); // Giới hạn kích thước body chống Spam payload lớn
+app.use(express.urlencoded({ extended: true }));
+app.use(compression());
+
+// 5. Development Logging
+if (process.env.NODE_ENV === 'development') {
+  app.use(morgan('dev'));
+}
+
+// ... Đăng ký Routes ở đây ...
+
+// 6. Global Error Handling Middleware (Luôn nằm cuối cùng)
+app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
+  const statusCode = err.statusCode || 500;
+  res.status(statusCode).json({
+    status: 'error',
+    message: err.message || 'Internal Server Error',
+    ...(process.env.NODE_ENV === 'development' && { stack: err.stack })
+  });
+});
+
+
+
+
+------------------------------- VALIDATION -------------------------
+[ Request từ Client ]
+        │
+        ▼
+┌──────────────────┐
+│  1. CONTROLLER   │ ──> Kiểm tra CÚ PHÁP (Format/Syntax)
+└──────────────────┘     "Data gửi lên có đúng hình dạng/kiểu dữ liệu không?"
+        │
+        ▼
+┌──────────────────┐
+│   2. SERVICE     │ ──> Kiểm tra LOGIC NGHIỆP VỤ (Business Rules)
+└──────────────────┘     "Data này có hợp lệ với quy tắc kinh doanh không?"
+        │
+        ▼
+┌──────────────────┐
+│    3. MODEL      │ ──> Kiểm tra CẤU TRÚC LƯU TRỮ (Data Integrity)
+└──────────────────┘     "Chốt chặn cuối cùng trước khi ghi xuống DB"
