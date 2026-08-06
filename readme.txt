@@ -1,8 +1,8 @@
 techstack:
 Frontend (UI)	webclient	ReactJS (dùng JavaScript/JSX), Vite (bundler)
-Backend (API)	server	Node.js (Runtime), Express.js (Framework), TypeScript (Ngôn ngữ)
-Database (DB)	server	MongoDB + Mongoose
-Styling	webclient	Tailwind CSS hoặc SCSS/Module CSS (Tùy chọn)
+Backend (API)	server	    Node.js (Runtime), Express.js (Framework), TypeScript (Ngôn ngữ)
+Database (DB)	server	    MongoDB + Mongoose
+Styling	        webclient	Tailwind CSS hoặc SCSS/Module CSS (Tùy chọn)
 
 Techs must be added for HSL:
 - FFmpeg
