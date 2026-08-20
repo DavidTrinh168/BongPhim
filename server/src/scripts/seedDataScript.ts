@@ -12,10 +12,9 @@ import Crew from '../models/Crew.js';
 
 import baseMoviesData from './baseMovieData.json' with { type: 'json' };
 import fakeUsersData from './fakeUserData.json' with { type: 'json' };
-import baseCrewData from './baseCrewData.json' with {type: 'json'};
-import baseCountryData from './baseCountryData.json' with {type: 'json'};
-import baseGenreData from './baseGenreData.json' with {type: 'json'};
-
+import baseCrewData from './baseCrewData.json' with { type: 'json' };
+import baseCountryData from './baseCountryData.json' with { type: 'json' };
+import baseGenreData from './baseGenreData.json' with { type: 'json' };
 
 dotenv.config();
 
@@ -49,7 +48,13 @@ const seedDatabase = async () => {
 
     // DỌN DẸP DỮ LIỆU CŨ
     console.log('🧹 Đang xóa sạch dữ liệu cũ...');
-    await Promise.all([Movie.deleteMany({}), Country.deleteMany({}), Genre.deleteMany({}), User.deleteMany({}), Crew.deleteMany({})]);
+    await Promise.all([
+      Movie.deleteMany({}),
+      Country.deleteMany({}),
+      Genre.deleteMany({}),
+      User.deleteMany({}),
+      Crew.deleteMany({}),
+    ]);
 
     console.log('🌱 Đang nạp danh sách Quốc gia...');
     const createdCountries = await Country.insertMany(baseCountryData);
@@ -58,7 +63,7 @@ const seedDatabase = async () => {
     console.log('🌱 Đang nạp danh sách Thể loại...');
     const createdGenres = await Genre.insertMany(baseGenreData);
     console.log(`🎉 Đã đổ thành công ${createdGenres.length} thể loại vào Database.`);
-    
+
     console.log('🌱 Đang nạp danh sách diễn viên...');
     const createdCrew = await Crew.insertMany(baseCrewData);
     console.log(`🎉 Đã đổ thành công ${createdCrew.length} diễn viên vào Database.`);
@@ -88,9 +93,8 @@ const seedDatabase = async () => {
     console.log('👤 Đang nạp dữ liệu người dùng...');
     const insertedUsers = await User.insertMany(fakeUsersData);
     console.log(`🎉 Đã đổ thành công ${insertedUsers.length} tài khoản người dùng vào Database.`);
-    
-    console.log('✨ QUÁ TRÌNH SEED DỮ LIỆU HOÀN TẤT THÀNH CÔNG! ✨');
 
+    console.log('✨ QUÁ TRÌNH SEED DỮ LIỆU HOÀN TẤT THÀNH CÔNG! ✨');
   } catch (error) {
     console.error('❌ Lỗi khi seed data:', error);
   } finally {
@@ -118,17 +122,21 @@ const deleteSeedDatabase = async () => {
       );
 
       if (answer.toLowerCase() === 'y' || answer.toLowerCase() === 'yes') {
-        rl.close(); // Đóng giao diện hỏi đáp terminal
-        await connectDB();
-        console.log('🧨 Đang tiến hành hủy diệt Database...');
-
-        await mongoose.connection.db?.dropDatabase();
-
-        console.log('✅ Đã DROP toàn bộ Database thành công!');
-        await mongoose.disconnect();
-        console.log('🔌 Đã ngắt kết nối MongoDB.');
-
-        break; // Thoát vòng lặp
+        while (true) {
+          let cfAnswer = '';
+          cfAnswer = await rl.question('\x1b[33m⚠️ Bạn hãy gõ lại BongPhim để xác nhận: \x1b[0m');
+          if (cfAnswer === 'BongPhim') {
+            rl.close(); // Đóng giao diện hỏi đáp terminal
+            await connectDB();
+            console.log('🧨 Đang tiến hành hủy diệt Database...');
+            await mongoose.connection.db?.dropDatabase();
+            console.log('✅ Đã DROP toàn bộ Database thành công!');
+            await mongoose.disconnect();
+            console.log('🔌 Đã ngắt kết nối MongoDB.');
+            break; // Thoát vòng lặp
+          }
+        }
+        break;
       } else if (answer.toLowerCase() === 'n' || answer.toLowerCase() === 'no') {
         console.log('🛑 Đã hủy bỏ hành động DROP Database. Không có gì bị xóa.');
         rl.close(); // Đóng giao diện hỏi đáp terminal
