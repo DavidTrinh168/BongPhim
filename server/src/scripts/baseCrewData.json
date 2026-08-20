@@ -1,0 +1,202 @@
+[
+  {
+    "name": "Phương Anh Đào",
+    "another_name": "Đào Macaron",
+    "avatar_url": "https://i.pravatar.cc/150?u=phuonganhdao",
+    "bio": "Nữ diễn viên tài năng của điện ảnh Việt Nam, nữ chính phim Mai.",
+    "gender": "female",
+    "birth_date": "1992-04-30T00:00:00.000Z",
+    "birth_place": "Cà Mau, Việt Nam",
+    "is_active": true
+  },
+  {
+    "name": "Tuấn Trần",
+    "another_name": "Trần Duy Tuấn",
+    "avatar_url": "https://i.pravatar.cc/150?u=tuantran",
+    "bio": "Nam diễn viên được biết đến qua các dự án Bố Già và Mai.",
+    "gender": "male",
+    "birth_date": "1992-11-20T00:00:00.000Z",
+    "birth_place": "Hồ Chí Minh, Việt Nam",
+    "is_active": true
+  },
+  {
+    "name": "Trấn Thành",
+    "another_name": "Huỳnh Trấn Thành",
+    "avatar_url": "https://i.pravatar.cc/150?u=tranthanhofficial",
+    "bio": "MC, diễn viên, đạo diễn và nhà sản xuất phim hàng đầu Việt Nam.",
+    "gender": "male",
+    "birth_date": "1987-02-05T00:00:00.000Z",
+    "birth_place": "Hồ Chí Minh, Việt Nam",
+    "is_active": true
+  },
+  {
+    "name": "Lê Giang",
+    "another_name": "Lê Ngọc Giang",
+    "avatar_url": "https://i.pravatar.cc/150?u=legiang",
+    "bio": "Nghệ sĩ hài, diễn viên điện ảnh quen thuộc của khán giả Việt.",
+    "gender": "female",
+    "birth_date": "1972-10-18T00:00:00.000Z",
+    "birth_place": "Hồ Chí Minh, Việt Nam",
+    "is_active": true
+  },
+  {
+    "name": "Choi Min-sik",
+    "another_name": "최민식",
+    "avatar_url": "https://i.pravatar.cc/150?u=choiminsik",
+    "bio": "Nam diễn viên gạo cội của điện ảnh Hàn Quốc, nổi tiếng với Oldboy và Exhuma.",
+    "gender": "male",
+    "birth_date": "1962-05-30T00:00:00.000Z",
+    "birth_place": "Seoul, South Korea",
+    "is_active": true
+  },
+  {
+    "name": "Kim Go-eun",
+    "another_name": "김고은",
+    "avatar_url": "https://i.pravatar.cc/150?u=kimgoeun",
+    "bio": "Nữ diễn viên Hàn Quốc nổi tiếng qua Yêu Tinh và Exhuma.",
+    "gender": "female",
+    "birth_date": "1991-07-02T00:00:00.000Z",
+    "birth_place": "Seoul, South Korea",
+    "is_active": true
+  },
+  {
+    "name": "Robert Downey Jr.",
+    "another_name": "RDJ",
+    "avatar_url": "https://i.pravatar.cc/150?u=rdj",
+    "bio": "Nam diễn viên Mỹ, linh hồn của vũ trụ điện ảnh Marvel với vai Iron Man.",
+    "gender": "male",
+    "birth_date": "1965-04-04T00:00:00.000Z",
+    "birth_place": "New York, USA",
+    "is_active": true
+  },
+  {
+    "name": "Chris Evans",
+    "another_name": "Christopher Robert Evans",
+    "avatar_url": "https://i.pravatar.cc/150?u=chrisevans",
+    "bio": "Nam diễn viên nổi tiếng toàn cầu với vai diễn Captain America.",
+    "gender": "male",
+    "birth_date": "1981-06-13T00:00:00.000Z",
+    "birth_place": "Massachusetts, USA",
+    "is_active": true
+  },
+  {
+    "name": "Matthew McConaughey",
+    "another_name": "Matthew David McConaughey",
+    "avatar_url": "https://i.pravatar.cc/150?u=matthew",
+    "bio": "Nam diễn viên đoạt giải Oscar, đóng vai chính trong Interstellar.",
+    "gender": "male",
+    "birth_date": "1969-11-04T00:00:00.000Z",
+    "birth_place": "Texas, USA",
+    "is_active": true
+  },
+  {
+    "name": "Anne Hathaway",
+    "another_name": "Anne Jacqueline Hathaway",
+    "avatar_url": "https://i.pravatar.cc/150?u=annehathaway",
+    "bio": "Nữ diễn viên hạng A của Hollywood, đoạt nhiều giải thưởng danh giá.",
+    "gender": "female",
+    "birth_date": "1982-11-12T00:00:00.000Z",
+    "birth_place": "New York, USA",
+    "is_active": true
+  },
+  {
+    "name": "Lee Jung-jae",
+    "another_name": "이정재",
+    "avatar_url": "https://i.pravatar.cc/150?u=leejungjae",
+    "bio": "Tài tử Hàn Quốc, gây tiếng vang toàn cầu với Squid Game.",
+    "gender": "male",
+    "birth_date": "1972-12-15T00:00:00.000Z",
+    "birth_place": "Seoul, South Korea",
+    "is_active": true
+  },
+  {
+    "name": "Jung Ho-yeon",
+    "another_name": "정호연",
+    "avatar_url": "https://i.pravatar.cc/150?u=junghoyeon",
+    "bio": "Người mẫu lấn sân điện ảnh cực kỳ thành công với Squid Game.",
+    "gender": "female",
+    "birth_date": "1994-06-23T00:00:00.000Z",
+    "birth_place": "Seoul, South Korea",
+    "is_active": true
+  },
+  {
+    "name": "Millie Bobby Brown",
+    "another_name": "Mills",
+    "avatar_url": "https://i.pravatar.cc/150?u=millie",
+    "bio": "Nữ diễn viên trẻ tuổi đình đám với vai Eleven trong Stranger Things.",
+    "gender": "female",
+    "birth_date": "2004-02-19T00:00:00.000Z",
+    "birth_place": "Marbella, Spain",
+    "is_active": true
+  },
+  {
+    "name": "Finn Wolfhard",
+    "another_name": "Finn",
+    "avatar_url": "https://i.pravatar.cc/150?u=finnwolfhard",
+    "bio": "Nam diễn viên trẻ triển vọng người Canada của loạt phim Stranger Things.",
+    "gender": "male",
+    "birth_date": "2002-12-23T00:00:00.000Z",
+    "birth_place": "Vancouver, Canada",
+    "is_active": true
+  },
+  {
+    "name": "Bryan Cranston",
+    "another_name": "Bryan Lee Cranston",
+    "avatar_url": "https://i.pravatar.cc/150?u=bryancranston",
+    "bio": "Nam diễn viên huyền thoại với vai Walter White trong Breaking Bad.",
+    "gender": "male",
+    "birth_date": "1956-03-07T00:00:00.000Z",
+    "birth_place": "California, USA",
+    "is_active": true
+  },
+  {
+    "name": "Aaron Paul",
+    "another_name": "Aaron Paul Sturtevant",
+    "avatar_url": "https://i.pravatar.cc/150?u=aaronpaul",
+    "bio": "Diễn viên đóng vai Jesse Pinkman trong TV Series Breaking Bad.",
+    "gender": "male",
+    "birth_date": "1979-08-27T00:00:00.000Z",
+    "birth_place": "Idaho, USA",
+    "is_active": true
+  },
+  {
+    "name": "Christian Bale",
+    "another_name": "Christian Charles Philip Bale",
+    "avatar_url": "https://i.pravatar.cc/150?u=christianbale",
+    "bio": "Nam diễn viên người Anh, nổi tiếng với khả năng biến hóa ngoại hình điêu luyện.",
+    "gender": "male",
+    "birth_date": "1974-01-30T00:00:00.000Z",
+    "birth_place": "Haverfordwest, Wales",
+    "is_active": true
+  },
+  {
+    "name": "Heath Ledger",
+    "another_name": "Heath Andrew Ledger",
+    "avatar_url": "https://i.pravatar.cc/150?u=heathledger",
+    "bio": "Diễn viên quá cố huyền thoại, đoạt giải Oscar với vai The Joker.",
+    "gender": "male",
+    "birth_date": "1979-04-04T00:00:00.000Z",
+    "birth_place": "Perth, Australia",
+    "is_active": false
+  },
+  {
+    "name": "Timothée Chalamet",
+    "another_name": "Timmy",
+    "avatar_url": "https://i.pravatar.cc/150?u=timothee",
+    "bio": "Nam thần thế hệ mới của Hollywood, diễn viên chính phim Dune.",
+    "gender": "male",
+    "birth_date": "1995-12-27T00:00:00.000Z",
+    "birth_place": "New York, USA",
+    "is_active": true
+  },
+  {
+    "name": "Zendaya",
+    "another_name": "Zendaya Maree Stoermer Coleman",
+    "avatar_url": "https://i.pravatar.cc/150?u=zendaya",
+    "bio": "Diễn viên, ca sĩ kiêm biểu tượng thời trang nổi tiếng toàn cầu.",
+    "gender": "female",
+    "birth_date": "1996-09-01T00:00:00.000Z",
+    "birth_place": "California, USA",
+    "is_active": true
+  }
+]

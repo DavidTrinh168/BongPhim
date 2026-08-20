@@ -7,8 +7,15 @@ import { fakerVI as faker } from '@faker-js/faker';
 import Movie from '../models/Movie.js';
 import Country from '../models/Country.js';
 import Genre from '../models/Genre.js';
+import User from '../models/User.js';
+import Crew from '../models/Crew.js';
 
-import fakeMoviesData from './fakeMovieData.json' with { type: 'json' };
+import baseMoviesData from './baseMovieData.json' with { type: 'json' };
+import fakeUsersData from './fakeUserData.json' with { type: 'json' };
+import baseCrewData from './baseCrewData.json' with { type: 'json' };
+import baseCountryData from './baseCountryData.json' with { type: 'json' };
+import baseGenreData from './baseGenreData.json' with { type: 'json' };
+import WatchList from '../models/watchList.js';
 
 dotenv.config();
 
@@ -41,49 +48,84 @@ const seedDatabase = async () => {
     await connectDB();
 
     // DỌN DẸP DỮ LIỆU CŨ
-    console.log('🧹 Đang xóa sạch dữ liệu Movies, Countries, Genres cũ...');
-    await Promise.all([Movie.deleteMany({}), Country.deleteMany({}), Genre.deleteMany({})]);
+    console.log('🧹 Đang xóa sạch dữ liệu cũ...');
+    await Promise.all([
+      Movie.deleteMany({}),
+      Country.deleteMany({}),
+      Genre.deleteMany({}),
+      User.deleteMany({}),
+      Crew.deleteMany({}),
+      WatchList.deleteMany({}),
+    ]);
 
-    //TẠO DỮ LIỆU QUỐC GIA MẪU (Dành cho list phim của bạn)
     console.log('🌱 Đang nạp danh sách Quốc gia...');
-    const createdCountries = await Country.insertMany([
-      { name: 'Vietnam', viName: 'Việt Nam', slug: 'viet-nam', iso_3166_1: 'VN' },
-      { name: 'United States', viName: 'Mỹ', slug: 'my', iso_3166_1: 'US' },
-      { name: 'South Korea', viName: 'Hàn Quốc', slug: 'han-quoc', iso_3166_1: 'KR' },
-    ]);
+    const createdCountries = await Country.insertMany(baseCountryData);
+    console.log(`🎉 Đã đổ thành công ${createdCountries.length} quốc gia vào Database.`);
 
-    // TẠO DỮ LIỆU THỂ LOẠI MẪU
     console.log('🌱 Đang nạp danh sách Thể loại...');
-    const createdGenres = await Genre.insertMany([
-      { name: 'Hành Động', slug: 'hanh-dong', description: 'Phim có nhịp độ nhanh' },
-      { name: 'Tình Cảm', slug: 'tinh-cam', description: 'Phim lãng mạn' },
-      { name: 'Hài Hước', slug: 'hai-huoc', description: 'Phim mang tính giải trí cao' },
-      { name: 'Khoa Học Viễn Tưởng', slug: 'khoa-hoc-vien-tuong', description: 'Phim Sci-Fi' },
-      { name: 'Tâm Lý', slug: 'tam-ly', description: 'Phim nặng về diễn biến nội tâm' },
-    ]);
+    const createdGenres = await Genre.insertMany(baseGenreData);
+    console.log(`🎉 Đã đổ thành công ${createdGenres.length} thể loại vào Database.`);
 
-    // NẠP DỮ LIỆU PHIM THẬT TỪ FILE JSON
+    console.log('🌱 Đang nạp danh sách diễn viên...');
+    const createdCrew = await Crew.insertMany(baseCrewData);
+    console.log(`🎉 Đã đổ thành công ${createdCrew.length} diễn viên vào Database.`);
+
     console.log('🎬 Đang nạp dữ liệu phim thực tế...');
-
     // Xử lý nối Foreign Key (ID Quốc gia và Thể loại) vào từng bộ phim
-    const moviesToInsert = fakeMoviesData.map((movie) => {
+    const moviesToInsert = baseMoviesData.map((movie) => {
       // Dùng Faker bốc ngẫu nhiên 1 quốc gia và 1-2 thể loại cho mỗi phim
       const randomCountries = faker.helpers.arrayElements(createdCountries, 1).map((c) => c._id);
+      const randomGenres = faker.helpers.arrayElements(createdGenres, { min: 1, max: 2 }).map((g) => g._id);
+      const randomCrew = faker.helpers.arrayElements(createdCrew, { min: 1, max: 2 }).map((g) => g._id);
 
-      const randomGenres = faker.helpers
-        .arrayElements(createdGenres, { min: 1, max: 2 })
-        .map((g) => g._id);
-
-      return {
-        ...movie,
+      return {...movie,
         countries: randomCountries,
         genres: randomGenres,
-        crew: [], // Mặc định rỗng nếu bạn chưa làm bảng Crew
+        crew: randomCrew, 
       };
     });
 
-    await Movie.insertMany(moviesToInsert);
-    console.log(`🎉 XONG! Đã đổ thành công ${moviesToInsert.length} bộ phim vào Database.`);
+    const insertedMovies = await Movie.insertMany(moviesToInsert); // Hứng mảng phim vừa tạo để lấy _id
+    console.log(`🎉 Đã đổ thành công ${insertedMovies.length} bộ phim vào Database.`);
+
+    // // Lấy ra danh sách các ID phim vừa tạo
+    // const movieIds = insertedMovies.map(m => m._id);
+
+    // NẠP DỮ LIỆU NGƯỜI DÙNG (USERS)
+    console.log('👤 Đang nạp dữ liệu người dùng...');
+    const insertedUsers = await User.insertMany(fakeUsersData);
+    console.log(`🎉 Đã đổ thành công ${insertedUsers.length} tài khoản người dùng vào Database.`);
+
+    //Tạo mảng rỗng để lúc sau đưa vào database
+    const watchListsToInsert: any[] = [];
+    //Tạo tên mẫu
+    const watch_list_name = ['Xem sau', 'Phim đi date', 'Ghibli'];
+
+    // Duyệt qua từng User đã được tạo trong DB
+    insertedUsers.forEach((user) => {
+      // Mỗi user sẽ tạo ngẫu nhiên 1 đến 2 danh sách khác nhau
+      const randomListForEachUser = faker.helpers.arrayElements(watch_list_name, {min: 1, max: 2,});
+      // Với mỗi danh sách, bốc ngẫu nhiên 2 đến 4 bộ phim KHÔNG TRÙNG NHAU
+      randomListForEachUser.forEach((listName) => {
+        //Bốc ngẫu nhiên không trùng nhau từ 2-6 phim trong danh sách phimm đã tao cho một danh sách xem
+        const randomMoviesForList = faker.helpers.arrayElements(insertedMovies, { min: 2, max: 6 });
+
+        //Hứng ID các phim đã chọn
+        const pickedMoviesIDs = randomMoviesForList.map((m) => m._id);
+
+        //Bỏ từng objetc đã tạo vào mảng rỗng đã tạo sẵn
+        watchListsToInsert.push({
+          user_id: user._id,
+          list_name: listName,
+          movies: pickedMoviesIDs,
+        });
+      });
+    });
+
+    const insertedWatchList = await WatchList.insertMany(watchListsToInsert);
+    console.log(`🎉 Đã đổ thành công ${insertedWatchList.length} bản ghi WatchList vào Database.`);
+
+    console.log('✨ QUÁ TRÌNH SEED DỮ LIỆU HOÀN TẤT THÀNH CÔNG! ✨');
   } catch (error) {
     console.error('❌ Lỗi khi seed data:', error);
   } finally {
@@ -111,17 +153,21 @@ const deleteSeedDatabase = async () => {
       );
 
       if (answer.toLowerCase() === 'y' || answer.toLowerCase() === 'yes') {
-        rl.close(); // Đóng giao diện hỏi đáp terminal
-        await connectDB();
-        console.log('🧨 Đang tiến hành hủy diệt Database...');
-
-        await mongoose.connection.db?.dropDatabase();
-
-        console.log('✅ Đã DROP toàn bộ Database thành công!');
-        await mongoose.disconnect();
-        console.log('🔌 Đã ngắt kết nối MongoDB.');
-
-        break; // Thoát vòng lặp
+        while (true) {
+          let cfAnswer = '';
+          cfAnswer = await rl.question('\x1b[33m⚠️ Bạn hãy gõ lại BongPhim để xác nhận: \x1b[0m');
+          if (cfAnswer === 'BongPhim') {
+            rl.close(); // Đóng giao diện hỏi đáp terminal
+            await connectDB();
+            console.log('🧨 Đang tiến hành hủy diệt Database...');
+            await mongoose.connection.db?.dropDatabase();
+            console.log('✅ Đã DROP toàn bộ Database thành công!');
+            await mongoose.disconnect();
+            console.log('🔌 Đã ngắt kết nối MongoDB.');
+            break; // Thoát vòng lặp
+          }
+        }
+        break;
       } else if (answer.toLowerCase() === 'n' || answer.toLowerCase() === 'no') {
         console.log('🛑 Đã hủy bỏ hành động DROP Database. Không có gì bị xóa.');
         rl.close(); // Đóng giao diện hỏi đáp terminal

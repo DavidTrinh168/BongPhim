@@ -1,0 +1,107 @@
+[
+  {
+    "name": "Vietnam",
+    "viName": "Việt Nam",
+    "slug": "viet-nam",
+    "iso_3166_1": "VN",
+    "is_active": true
+  },
+  {
+    "name": "United States",
+    "viName": "Mỹ",
+    "slug": "my",
+    "iso_3166_1": "US",
+    "is_active": true
+  },
+  {
+    "name": "South Korea",
+    "viName": "Hàn Quốc",
+    "slug": "han-quoc",
+    "iso_3166_1": "KR",
+    "is_active": true
+  },
+  {
+    "name": "China",
+    "viName": "Trung Quốc",
+    "slug": "trung-quoc",
+    "iso_3166_1": "CN",
+    "is_active": true
+  },
+  {
+    "name": "Japan",
+    "viName": "Nhật Bản",
+    "slug": "nhat-ban",
+    "iso_3166_1": "JP",
+    "is_active": true
+  },
+  {
+    "name": "Thailand",
+    "viName": "Thái Lan",
+    "slug": "thai-lan",
+    "iso_3166_1": "TH",
+    "is_active": true
+  },
+  {
+    "name": "Hong Kong",
+    "viName": "Hồng Kông",
+    "slug": "hong-kong",
+    "iso_3166_1": "HK",
+    "is_active": true
+  },
+  {
+    "name": "Taiwan",
+    "viName": "Đài Loan",
+    "slug": "dai-loan",
+    "iso_3166_1": "TW",
+    "is_active": true
+  },
+  {
+    "name": "United Kingdom",
+    "viName": "Anh",
+    "slug": "anh",
+    "iso_3166_1": "GB",
+    "is_active": true
+  },
+  {
+    "name": "France",
+    "viName": "Pháp",
+    "slug": "phap",
+    "iso_3166_1": "FR",
+    "is_active": true
+  },
+  {
+    "name": "India",
+    "viName": "Ấn Độ",
+    "slug": "an-do",
+    "iso_3166_1": "IN",
+    "is_active": true
+  },
+  {
+    "name": "Spain",
+    "viName": "Tây Ban Nha",
+    "slug": "tay-ban-nha",
+    "iso_3166_1": "ES",
+    "is_active": true
+  },
+  {
+    "name": "Germany",
+    "viName": "Đức",
+    "slug": "duc",
+    "iso_3166_1": "DE",
+    "is_active": true
+  },
+  {
+    "name": "Canada",
+    "viName": "Canada",
+    "slug": "canada",
+    "iso_3166_1": "CA",
+    "is_active": true
+  },
+  {
+    "name": "Australia",
+    "viName": "Úc",
+    "slug": "uc",
+    "iso_3166_1": "AU",
+    "is_active": true
+  }
+]

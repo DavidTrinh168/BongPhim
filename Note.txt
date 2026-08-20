@@ -132,3 +132,25 @@ app.use((err: any, req: express.Request, res: express.Response, next: express.Ne
 ┌──────────────────┐
 │    3. MODEL      │ ──> Kiểm tra CẤU TRÚC LƯU TRỮ (Data Integrity)
 └──────────────────┘     "Chốt chặn cuối cùng trước khi ghi xuống DB"
+
+
+
+
+--------------------------------- LOCAL GITHUB BRANCH ---------------------------------
+🟢 Nhánh 1: feature/setup-core-models (Gom hết các Model cơ bản)
+Mục tiêu: Dựng xong toàn bộ hình thù CSDL ban đầu để các tính năng sau có cái mà dùng.
+•	Tạo Model Movie, Genre, Country, Episode.
+•	Tạo script seedDataScript.ts.
+•	Xong xuôi $\rightarrow$ Tạo Pull Request merge vào main.
+🟢 Nhánh 2: feature/movie-management (Module Quản lý Phim)
+Mục tiêu: Làm trọn vẹn từ A-Z tính năng thêm, sửa, xóa phim.
+•	Viết Schema validation (Zod).
+•	Viết MovieService (bao gồm cả Cascade Delete).
+•	Viết MovieController và Route /api/movies.
+•	Test chạy ngon lành $\rightarrow$ Tạo Pull Request merge vào main.
+🟢 Nhánh 3: feature/auth-and-roles (Module Xác thực & Phân quyền)
+Mục tiêu: Tích hợp Login/Register và phân quyền Admin.
+•	Tạo Model User.
+•	Viết auth.service.ts (JWT, Hash password).
+•	Viết middleware verifyToken và checkAdmin.
+•	Xong xuôi $\rightarrow$ Tạo Pull Request merge vào main.
