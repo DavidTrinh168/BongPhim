@@ -11,7 +11,7 @@ export interface IWatchList extends Document {
 const WatchListSchema = new Schema<IWatchList>(
   {
     user_id: { type: Schema.Types.ObjectId, ref: 'User', required: true, index: true },
-    list_name: { type: String, required: true, trim: true, index: true, unique: true, default: 'Xem sau' },
+    list_name: { type: String, required: true, trim: true, default: 'Xem sau' },
     movie_id: { type: Schema.Types.ObjectId, ref: 'Movie', required: true },
   },
   { timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' } },
