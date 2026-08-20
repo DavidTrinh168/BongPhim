@@ -1,0 +1,98 @@
+[
+  {
+    "name": "Hành Động",
+    "slug": "hanh-dong",
+    "description": "Những bộ phim có nhịp độ nhanh, chứa nhiều cảnh chiến đấu, rượt đuổi và cháy nổ kịch tính.",
+    "is_active": true
+  },
+  {
+    "name": "Tình Cảm",
+    "slug": "tinh-cam",
+    "description": "Các tác phẩm tập trung vào câu chuyện tình yêu, sự lãng mạn và những cung bậc cảm xúc của nhân vật.",
+    "is_active": true
+  },
+  {
+    "name": "Hài Hước",
+    "slug": "hai-huoc",
+    "description": "Những bộ phim mang tính giải trí cao, mang lại tiếng cười qua các tình huống trớ trêu hoặc lời thoại dí dỏm.",
+    "is_active": true
+  },
+  {
+    "name": "Khoa Học Viễn Tưởng",
+    "slug": "khoa-hoc-vien-tuong",
+    "description": "Khám phá những công nghệ tương lai, du hành vũ trụ, người ngoài hành tinh và các khái niệm khoa học giả tưởng.",
+    "is_active": true
+  },
+  {
+    "name": "Tâm Lý",
+    "slug": "tam-ly",
+    "description": "Khai thác sâu sắc về diễn biến nội tâm, xung đột tinh thần và những góc khuất trong tư duy con người.",
+    "is_active": true
+  },
+  {
+    "name": "Kinh Dị",
+    "slug": "kinh-di",
+    "description": "Mang đến cảm giác sợ hãi, ám ảnh với các yếu tố tâm linh, ma quỷ hoặc các hiện tượng siêu nhiên.",
+    "is_active": true
+  },
+  {
+    "name": "Giật Gân",
+    "slug": "giat-gan",
+    "description": "Tạo sự căng thẳng tột độ, hồi hộp chờ đợi những tình tiết đầy bất ngờ và những cú lật mở khó đoán.",
+    "is_active": true
+  },
+  {
+    "name": "Hình Sự",
+    "slug": "hinh-su",
+    "description": "Xoay quanh các vụ án mạng, thế giới ngầm, cảnh sát điều tra và hành trình phá án đầy trí tuệ.",
+    "is_active": true
+  },
+  {
+    "name": "Phiêu Lưu",
+    "slug": "phieu-luu",
+    "description": "Những chuyến hành trình khám phá những vùng đất mới, đối mặt với thử thách và rủi ro ở thế giới bên ngoài.",
+    "is_active": true
+  },
+  {
+    "name": "Hoạt Hình",
+    "slug": "hoat-hinh",
+    "description": "Sử dụng đồ họa 2D hoặc 3D để tạo nên những nhân vật sống động, phù hợp cho mọi lứa tuổi.",
+    "is_active": true
+  },
+  {
+    "name": "Gia Đình",
+    "slug": "gia-dinh",
+    "description": "Những câu chuyện nhẹ nhàng, ý nghĩa về tình thân, sự gắn kết và những bài học cuộc sống trong gia đình.",
+    "is_active": true
+  },
+  {
+    "name": "Cổ Trang",
+    "slug": "co-trang",
+    "description": "Lấy bối cảnh các triều đại lịch sử xưa cũ, nổi bật với trang phục truyền thống và các cuộc đấu tranh cung đình.",
+    "is_active": true
+  },
+  {
+    "name": "Võ Thuật",
+    "slug": "vo-thuat",
+    "description": "Tập trung phô diễn những pha đánh đấm đẹp mắt, các môn phái võ thuật và tinh thần thượng võ.",
+    "is_active": true
+  },
+  {
+    "name": "Thần Thoại",
+    "slug": "than-thoai",
+    "description": "Đưa người xem vào thế giới của phép thuật, quái vật, các vị thần và những anh hùng trong truyền thuyết.",
+    "is_active": true
+  },
+  {
+    "name": "Chiến Tranh",
+    "slug": "chien-tranh",
+    "description": "Tái hiện sự khốc liệt của các cuộc chiến trang lịch sử, mất mát và tình đồng chí nơi chiến trường.",
+    "is_active": true
+  },
+  {
+    "name": "Tài Liệu",
+    "slug": "tai-lieu",
+    "description": "Những thước phim ghi lại sự kiện có thật, mang tính chất cung cấp kiến thức và góc nhìn chân thực về cuộc sống.",
+    "is_active": true
+  }
+]
