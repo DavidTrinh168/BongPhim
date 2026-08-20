@@ -15,6 +15,7 @@ import fakeUsersData from './fakeUserData.json' with { type: 'json' };
 import baseCrewData from './baseCrewData.json' with { type: 'json' };
 import baseCountryData from './baseCountryData.json' with { type: 'json' };
 import baseGenreData from './baseGenreData.json' with { type: 'json' };
+import WatchList from '../models/watchList.js';
 
 dotenv.config();
 
@@ -54,6 +55,7 @@ const seedDatabase = async () => {
       Genre.deleteMany({}),
       User.deleteMany({}),
       Crew.deleteMany({}),
+      WatchList.deleteMany({}),
     ]);
 
     console.log('🌱 Đang nạp danh sách Quốc gia...');
@@ -93,6 +95,35 @@ const seedDatabase = async () => {
     console.log('👤 Đang nạp dữ liệu người dùng...');
     const insertedUsers = await User.insertMany(fakeUsersData);
     console.log(`🎉 Đã đổ thành công ${insertedUsers.length} tài khoản người dùng vào Database.`);
+
+    //Tạo mảng rỗng để lúc sau đưa vào database
+    const watchListsToInsert: any[] = [];
+    //Tạo tên mẫu
+    const watch_list_name = ['Xem sau', 'Phim đi date', 'Ghibli'];
+
+    // Duyệt qua từng User đã được tạo trong DB
+    insertedUsers.forEach((user) => {
+      // Mỗi user sẽ tạo ngẫu nhiên 1 đến 2 danh sách khác nhau
+      const randomListForEachUser = faker.helpers.arrayElements(watch_list_name, {min: 1, max: 2,});
+      // Với mỗi danh sách, bốc ngẫu nhiên 2 đến 4 bộ phim KHÔNG TRÙNG NHAU
+      randomListForEachUser.forEach((listName) => {
+        //Bốc ngẫu nhiên không trùng nhau từ 2-6 phim trong danh sách phimm đã tao cho một danh sách xem
+        const randomMoviesForList = faker.helpers.arrayElements(insertedMovies, { min: 2, max: 6 });
+
+        //Hứng ID các phim đã chọn
+        const pickedMoviesIDs = randomMoviesForList.map((m) => m._id);
+
+        //Bỏ từng objetc đã tạo vào mảng rỗng đã tạo sẵn
+        watchListsToInsert.push({
+          user_id: user._id,
+          list_name: listName,
+          movies: pickedMoviesIDs,
+        });
+      });
+    });
+
+    const insertedWatchList = await WatchList.insertMany(watchListsToInsert);
+    console.log(`🎉 Đã đổ thành công ${insertedWatchList.length} bản ghi WatchList vào Database.`);
 
     console.log('✨ QUÁ TRÌNH SEED DỮ LIỆU HOÀN TẤT THÀNH CÔNG! ✨');
   } catch (error) {
