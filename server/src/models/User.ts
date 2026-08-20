@@ -13,7 +13,6 @@ export interface IUser extends Document {
     email_verified: boolean;
     auth_provider: 'local' | 'google' | 'facebook';
     provider_id: string;
-    fav_movies: Types.ObjectId[];
     sub_plan: 'free' | 'basic' | 'premium';
     // sub_expiration: Date;
     refresh_token: string;
@@ -36,7 +35,6 @@ const UserSchema = new Schema<IUser>(
         email_verified: { type: Boolean, default: false },
         auth_provider: { type: String, enum: ['local', 'google', 'facebook'], default: 'local' },
         provider_id: { type: String, trim: true },
-        fav_movies: [{ type: Schema.Types.ObjectId, ref: 'Movie' }],
         sub_plan: { type: String, enum: ['free', 'basic', 'premium'], default: 'free' },
         // sub_expiration: { type: Date },
         refresh_token: { type: String, trim: true },
