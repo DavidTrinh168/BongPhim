@@ -13,11 +13,8 @@ export interface IMovie extends Document {
   is_trending: boolean;
   slug: string;
   duration?: number;
-
-  // Liên kết bảng
-  crew?: Types.ObjectId[];
-  countries?: Types.ObjectId[];
-
+  crew: Types.ObjectId[];
+  countries: Types.ObjectId[];
   created_at?: Date;
   updated_at?: Date;
 }
