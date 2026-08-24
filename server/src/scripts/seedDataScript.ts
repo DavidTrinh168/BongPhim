@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import dotenv from 'dotenv';
+import 'dotenv/config';
 import * as readline from 'node:readline/promises'; // Thư viện để làm prompt hỏi đáp ở terminal
 import { fakerVI as faker } from '@faker-js/faker';
 
@@ -16,8 +16,6 @@ import baseCrewData from './baseCrewData.json' with { type: 'json' };
 import baseCountryData from './baseCountryData.json' with { type: 'json' };
 import baseGenreData from './baseGenreData.json' with { type: 'json' };
 import WatchList from '../models/watchList.js';
-
-dotenv.config();
 
 const connectDB = async () => {
   // 1. KIỂM TRA MÔI TRƯỜNG (BẢO MẬT QUAN TRỌNG)
@@ -43,20 +41,23 @@ const connectDB = async () => {
   console.log('✅ Kết nối MongoDB thành công!');
 };
 
+const cleanOldJunk = async () => {
+  console.log('🧹 Đang xóa sạch dữ liệu cũ...');
+      await Promise.all([
+        Movie.deleteMany({}),
+        Country.deleteMany({}),
+        Genre.deleteMany({}),
+        User.deleteMany({}),
+        Crew.deleteMany({}),
+      ]);
+}
+
 const seedDatabase = async () => {
   try {
     await connectDB();
 
     // DỌN DẸP DỮ LIỆU CŨ
-    console.log('🧹 Đang xóa sạch dữ liệu cũ...');
-    await Promise.all([
-      Movie.deleteMany({}),
-      Country.deleteMany({}),
-      Genre.deleteMany({}),
-      User.deleteMany({}),
-      Crew.deleteMany({}),
-      WatchList.deleteMany({}),
-    ]);
+    await cleanOldJunk();
 
     console.log('🌱 Đang nạp danh sách Quốc gia...');
     const createdCountries = await Country.insertMany(baseCountryData);
@@ -136,6 +137,44 @@ const seedDatabase = async () => {
   }
 };
 
+const initDatabase = async () => {
+  try {
+    await connectDB();
+
+    // DỌN DẸP DỮ LIỆU CŨ
+    await cleanOldJunk();
+
+    console.log('🌱 Đang nạp danh sách Quốc gia...');
+    const createdCountries = await Country.insertMany(baseCountryData);
+    console.log(`🎉 Đã đổ thành công ${createdCountries.length} quốc gia vào Database.`);
+
+    console.log('🌱 Đang nạp danh sách Thể loại...');
+    const createdGenres = await Genre.insertMany(baseGenreData);
+    console.log(`🎉 Đã đổ thành công ${createdGenres.length} thể loại vào Database.`);
+
+    console.log('🌱 Đang nạp danh sách diễn viên...');
+    const createdCrew = await Crew.insertMany(baseCrewData);
+    console.log(`🎉 Đã đổ thành công ${createdCrew.length} diễn viên vào Database.`);
+
+    console.log('🎬 Đang nạp dữ liệu phim thực tế...');
+    const insertedMovies = await Movie.insertMany(baseMoviesData); 
+    console.log(`🎉 Đã đổ thành công ${insertedMovies.length} bộ phim vào Database.`);
+
+    console.log('👤 Đang nạp dữ liệu người dùng...');
+    const insertedUsers = await User.insertMany(fakeUsersData);
+    console.log(`🎉 Đã đổ thành công ${insertedUsers.length} tài khoản người dùng vào Database.`);
+
+    console.log('✨ QUÁ TRÌNH SEED DỮ LIỆU HOÀN TẤT THÀNH CÔNG! ✨');
+  } catch (error) {
+    console.error('❌ Lỗi khi seed data:', error);
+  } finally {
+    //Ngắt kết nối sau khi xong việc
+    await mongoose.disconnect();
+    console.log('🔌 Đã ngắt kết nối MongoDB.');
+    process.exit(0);
+  }
+};
+
 const deleteSeedDatabase = async () => {
   // Tạo interface để hỏi đáp trên Terminal
   const rl = readline.createInterface({
@@ -189,6 +228,8 @@ const action = process.argv[2];
 // Chạy hàm
 if (action === 'drop') {
   deleteSeedDatabase();
-} else {
+} else if (action === 'init') {
+  initDatabase();
+} else{
   seedDatabase();
 }
