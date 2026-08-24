@@ -9,7 +9,8 @@
     "dev": "nodemon --exec \"node --loader ts-node/esm --experimental-specifier-resolution=node\" src/index.ts",
     "build": "tsc",
     "seed": "tsx src/scripts/seedDataScript.ts",
-    "seed:drop": "tsx src/scripts/seedDataScript.ts drop"
+    "seed:drop": "tsx src/scripts/seedDataScript.ts drop",
+    "seed:init": "tsx src/scripts/seedDataScript.ts init"
   },
   "keywords": [],
   "author": "",
