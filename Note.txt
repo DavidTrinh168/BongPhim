@@ -137,11 +137,12 @@ app.use((err: any, req: express.Request, res: express.Response, next: express.Ne
 
 
 --------------------------------- LOCAL GITHUB BRANCH ---------------------------------
-🟢 Nhánh 1: feature/setup-core-models (Gom hết các Model cơ bản)
+Nhánh 1: feature/setup-core-models (Gom hết các Model cơ bản)
 Mục tiêu: Dựng xong toàn bộ hình thù CSDL ban đầu để các tính năng sau có cái mà dùng.
 •	Tạo Model Movie, Genre, Country, Episode.
 •	Tạo script seedDataScript.ts.
 •	Xong xuôi $\rightarrow$ Tạo Pull Request merge vào main.
+
 🟢 Nhánh 2: feature/movie-management (Module Quản lý Phim)
 Mục tiêu: Làm trọn vẹn từ A-Z tính năng thêm, sửa, xóa phim.
 •	Viết Schema validation (Zod).
@@ -154,3 +155,105 @@ Mục tiêu: Tích hợp Login/Register và phân quyền Admin.
 •	Viết auth.service.ts (JWT, Hash password).
 •	Viết middleware verifyToken và checkAdmin.
 •	Xong xuôi $\rightarrow$ Tạo Pull Request merge vào main.
+🟢 Nhánh 4: feature/streaming
+🟢 Nhánh 5: feature/social-feature (optional)
+🟢 Nhánh 6: feature/subcribtion-and-payment
+
+--------------------------------- TO DO ---------------------------------
+1. Yêu cầu Nghiệp vụ (Business Rules)
+  Đây là các quy tắc mà Service Layer phải đảm bảo không bao giờ bị vi phạm:
+  1.	Ràng buộc Content Type:
+    o	Nếu content_type là movie (Phim lẻ): Chấp nhận trường duration (thời lượng).
+    o	Nếu content_type là series (Phim bộ): Không quan tâm đến duration của phim gốc (vì thời lượng tính theo tập).
+  2.	Quy tắc Slug (Đường dẫn SEO):
+    o	Slug phải là duy nhất (Unique) trên toàn hệ thống.
+    o	Nếu Frontend không gửi lên slug, Backend (Service) phải tự động tạo slug từ title (Ví dụ: "Ký Sinh Trùng" -> "ky-sinh-trung").
+  3.	Toàn vẹn Dữ liệu Liên kết (Foreign Key Integrity):
+    o	Khi thêm mới/cập nhật phim với các mảng genres, countries, crew: Backend nên kiểm tra xem các ID này có thực sự tồn tại trong DB không. Nếu truyền ID ảo -> Báo lỗi 400 Bad Request.
+  4.	Quy tắc Xóa (Delete Constraint):
+    o	Không cho phép xóa cứng (Hard Delete) một bộ phim nếu nó đã có danh sách Tập phim (Episodes) liên kết. Phải yêu cầu xóa các tập phim trước (Hoặc áp dụng Cascade Delete tùy quy trình doanh nghiệp).
+
+2. Thiết kế RESTful API (Routes Layer)
+    File dự kiến: server/src/routes/movie.route.ts
+    Phương thức   	Endpoint    	          Chức năng   	                                        Phân quyền (Tương lai)
+    GET	            /api/v1/movies	        Lấy danh sách phim (có Lọc, Tìm kiếm, Phân trang)	    Public
+    GET	            /api/v1/movies/:slug	  Lấy chi tiết 1 bộ phim (Kèm mảng Episodes, Crew)	    Public
+    POST	          /api/v1/movies	        Tạo mới một bộ phim	                                  [Admin]
+    PATCH	          /api/v1/movies/:id	    Cập nhật một bộ phim (Chỉ cập nhật trường gửi lên)	  [Admin]
+    DELETE	        /api/v1/movies/:id	    Xóa một bộ phim	                                      [Admin]
+
+3. Trách nhiệm của Controller Layer
+  File dự kiến: server/src/controllers/movie.controller.ts
+  Controller ở nhánh này chỉ làm 3 việc: Nhận request -> Gọi Service -> Trả response.
+  •	DONE: createMovie: Nhận req.body, gọi Service tạo phim, trả về status 201 Created. 
+  •	getAllMovies:
+    o	Bóc tách req.query (Ví dụ: ?page=1&limit=20&genres=id1,id2&country=id3&sort=-created_at&q=batman).
+    o	Gọi Service để lấy data và tổng số lượng (total).
+    o	Trả về status 200 OK với format chuẩn: { meta: { page, limit, total, totalPages }, data: [...] }.
+  •	DONE: getMovieDetail: Nhận req.params.slug, gọi Service. Nếu Service trả về null, controller phản hồi 404 Not Found. Nếu có, trả về 200 OK.
+  •	updateMovie: Nhận req.params.id và req.body, gọi Service, trả về 200 OK.
+  •	DONE: deleteMovie: Nhận req.params.id, gọi Service, trả về 204 No Content (Chuẩn REST cho xóa thành công).
+4. Trách nhiệm của Service Layer (Trái tim của tính năng)
+  File dự kiến: server/src/services/movie.service.ts
+  Đây là nơi bạn sẽ code nhiều nhất và thể hiện đẳng cấp "doanh nghiệp".
+  •	createMovie(data):
+    o	Chạy logic tự sinh slug (nếu cần).
+    o	Gọi const newMovie = new Movie(data); await newMovie.save();
+  •	getAllMovies(queryOptions):
+    o	Xây dựng bộ lọc MongoDB ($match hoặc filter object) động dựa trên query truyền vào.
+      	Tìm kiếm text: { title: { $regex: queryOptions.q, $options: 'i' } }.
+      	Lọc thể loại: { genres: { $in: queryOptions.genresArray } }.
+    o	Tính toán .skip() và .limit() cho phân trang.
+    o	.populate('genres', 'name slug') và .populate('countries', 'name') (Chỉ lấy các trường cần thiết để response nhẹ).
+    o	Chạy Movie.countDocuments(filter) để lấy tổng số phim (phục vụ vẽ UI phân trang ở Frontend).
+  •	getMovieBySlug(slug):
+    o	Movie.findOne({ slug })
+    o	.populate('genres')
+    o	.populate('countries')
+    o	.populate('episodes') (Nhờ cái Virtual Populate hôm trước).
+    o	.populate('crew') (Populate lồng nhau để lấy thông tin diễn viên/đạo diễn).
+  •	updateMovie(id, updateData):
+    o	Kiểm tra xem phim có tồn tại không.
+    o	Nếu updateData có chứa title mới, xem xét có update lại slug không (tùy vào rule SEO của bạn).
+    o	Dùng Movie.findByIdAndUpdate(id, updateData, { new: true, runValidators: true }).
+  •	deleteMovie(id):
+    o	Nâng cao: Kiểm tra const episodeCount = await Episode.countDocuments({ movieId: id }); Nếu > 0 thì throw new Error('Cần xóa tập phim trước').
+    o	Nếu an toàn: Movie.findByIdAndDelete(id).
+
+
+🚀 Lời khuyên thiết lập nhánh (feature/movie-management) này
+1.	Hãy tạo file utils/generateSlug.ts để viết một hàm chuyển đổi Tiếng Việt có dấu thành không dấu (hoặc dùng thư viện slugify).
+2.	Ở chức năng GET /api/v1/movies, bạn sẽ phải xử lý logic truyền Query Parameters rất nhiều. Hãy viết nó thật sạch.
+
+--------------------------------- TO DO UTILS ---------------------------------
+1. Đặc điểm của một hàm nằm trong utils (Chuẩn doanh nghiệp)
+  Để một file xứng đáng nằm trong thư mục utils, nó phải đáp ứng các tiêu chí sau:
+    •	Đơn nhiệm (Single Purpose): Chỉ làm đúng 1 việc duy nhất (ví dụ: tạo slug, định dạng ngày tháng, tính toán phân trang).
+    •	Độc lập (Independent): Không dính dáng đến Business Logic (Nghiệp vụ). Nó không cần biết hệ thống của bạn là web bán hàng hay web xem phim.
+    •	Không gọi Database (No DB Calls): Hàm util hiếm khi nào (gần như không bao giờ) import Model hay thực hiện các lệnh truy vấn find(), save(). (Nếu có gọi DB, nó phải nằm ở services).
+    •	Đầu vào -> Đầu ra rõ ràng (Pure Function): Thường là các hàm nhận vào một tham số và trả về kết quả ngay lập tức mà không làm thay đổi trạng thái hệ thống.
+2. Các file thường có mặt trong thư mục utils của Backend
+  Đối với dự án "Bông Phim" của bạn, đây là những "món đồ nghề" phổ biến bạn sẽ tạo trong thư mục server/src/utils/:
+    🛠️ generateSlug.ts (Tạo URL thân thiện)
+    Hàm này nhận vào một chuỗi tiếng Việt có dấu (ví dụ: "Ký Sinh Trùng") và trả về chuỗi không dấu ("ky-sinh-trung").
+      •	Ai dùng nó? Movie Service (khi tạo phim), Person Service (khi tạo diễn viên), Genre Service (khi tạo thể loại). Bạn viết 1 lần và dùng ở 3 nơi.
+    🛠️ catchAsync.ts (Loại bỏ try-catch dư thừa)
+    Trong Express, bạn thường xuyên phải viết try { ... } catch(err) { next(err) } ở mọi Controller. Ở doanh nghiệp, người ta viết một hàm bọc (wrapper) trong utils để xử lý việc này tự động, giúp Controller cực kỳ ngắn gọn.
+    🛠️ apiResponse.ts (Chuẩn hóa dữ liệu trả về)
+    Thay vì mỗi Controller tự gọi res.json({...}) với các cấu trúc khác nhau (lúc thì data, lúc thì result), bạn tạo một hàm util để đảm bảo mọi API đều trả về đúng 1 cấu trúc đồng nhất:
+
+TypeScript
+// Ví dụ một util format response
+export const successResponse = (res, statusCode, message, data, meta = null) => {
+  return res.status(statusCode).json({
+    success: true,
+    message,
+    data,
+    meta // Dùng cho phân trang
+  });
+};
+
+    🛠️ jwt.utils.ts hoặc hash.utils.ts (Tiện ích bảo mật)
+    Chứa các hàm như hashPassword(plainText) hoặc generateToken(userId). (Sẽ dùng rất nhiều ở nhánh feature/auth-and-roles).
+
+
