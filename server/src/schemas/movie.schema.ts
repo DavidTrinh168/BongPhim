@@ -20,10 +20,7 @@ const baseMovieBody = z.object({
   viTitle: z.string().trim().optional(),
 
   poster_url: z.url({
-    error: (iss) => {
-      if (iss.input === undefined) return 'Poster URL không được trống';
-      return 'Poster URL không đúng định dạng link';
-    },
+    error: (iss) => iss.input === undefined ? "Poster URL không được trống" : " Poster URL không đúng định dạng link"
   }),
 
   content_type: z.enum(
@@ -64,7 +61,7 @@ const createMovieBody = baseMovieBody.superRefine((data, ctx) => {
   // Validate chéo (Cross-field validation): Nếu là movie thì duration là bắt buộc
   if (data.content_type === 'movie' && !data.duration) {
     ctx.addIssue({
-      code: z.ZodIssueCode.custom,
+      code: 'custom',
       message: 'Phim lẻ (movie) bắt buộc phải nhập thời lượng (duration)',
       path: ['duration'], // Trỏ đúng lỗi vào field duration
     });

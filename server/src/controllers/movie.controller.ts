@@ -37,10 +37,10 @@ export const getMovies = async (req: Request, res: Response) => {
 export const getMovieDetail = async (req: Request, res: Response) => {
   try {
     // Gọi chung là identifier (có thể là slug hoặc id)
-    const { identifier } = req.params; 
+    const { param } = req.params; 
 
     //Chống lỗi TypeScript (Kiểm tra xem identifier có phải là chuỗi hợp lệ không)
-    if (!identifier || typeof identifier !== 'string') {
+    if (typeof param !== 'string') {
       return res.status(400).json({
         status: 'fail',
         message: 'Identifier không hợp lệ',
@@ -49,10 +49,10 @@ export const getMovieDetail = async (req: Request, res: Response) => {
 
     let movie;
 
-    if (isValidObjectId(identifier)) {
-      movie = await movieService.findMovieById(identifier);
+    if (isValidObjectId(param)) {
+      movie = await movieService.findMovieById(param);
     } else {
-      movie = await movieService.findMovieBySlug(identifier);
+      movie = await movieService.findMovieBySlug(param);
     }
 
     if (!movie) {
@@ -68,5 +68,34 @@ export const getMovieDetail = async (req: Request, res: Response) => {
     });
   } catch (error) {
     return res.status(500).json({ message: 'Lỗi server' });
+  } 
+};
+
+export const deleteMovie = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+
+    //Chống lỗi TypeScript (Kiểm tra xem tính hợp lệ của movieId)
+    if ( typeof id !== 'string' || !isValidObjectId(id)) {
+      return res.status(400).json({
+        status: 'fail',
+        message: 'movieId không hợp lệ',
+      });
+    }
+
+    const deletedMMovie = await movieService.deleteMovieByID(id);
+
+    //vì delete thành công sẽ return lại thông tin movie đã xóa nên kiểm tra
+    if(!deletedMMovie){
+      return res.status(400).json({
+        status: 'fail',
+        message: 'Không tìm thấy bộ phim này hoặc đã bị xóa',
+      });
+    }
+
+    res.status(204).send();
+    
+  } catch (error) {
+    res.status(500).json({ message: 'Server error', error });
   }
 };
