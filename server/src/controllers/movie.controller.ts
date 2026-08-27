@@ -23,7 +23,7 @@ export const createrMovie = async (req: Request, res: Response) => {
 export const getMovies = async (req: Request, res: Response) => {
   try {
     const movies = await movieService.findAllMovies();
-
+    // logic phân trang
     res.status(200).json({
       message: 'Movies retrieved successfully',
       count: movies.length,
