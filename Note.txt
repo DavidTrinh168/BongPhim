@@ -155,6 +155,7 @@ Mục tiêu: Tích hợp Login/Register và phân quyền Admin.
 •	Viết auth.service.ts (JWT, Hash password).
 •	Viết middleware verifyToken và checkAdmin.
 •	Xong xuôi $\rightarrow$ Tạo Pull Request merge vào main.
+🟢 Nhánh 4: feature/user-managerment
 🟢 Nhánh 4: feature/streaming
 🟢 Nhánh 5: feature/social-feature (optional)
 🟢 Nhánh 6: feature/subcribtion-and-payment
@@ -256,4 +257,13 @@ export const successResponse = (res, statusCode, message, data, meta = null) => 
     🛠️ jwt.utils.ts hoặc hash.utils.ts (Tiện ích bảo mật)
     Chứa các hàm như hashPassword(plainText) hoặc generateToken(userId). (Sẽ dùng rất nhiều ở nhánh feature/auth-and-roles).
 
+--------------------------------- COMMIT CODE ---------------------------------
+Commit code theo chuẩn Conventional Commits
 
+Các team chuyên nghiệp thường yêu cầu viết commit message theo cấu trúc 
+<type>: <mô tả ngắn gọn> để lịch sử git dễ đọc và phục vụ việc tự động tạo báo cáo cập nhật.
+
+  - feat: Khi thêm tính năng mới (Ví dụ: feat: tích hợp API thêm phim mới vào database).
+  - fix: Khi sửa lỗi (Ví dụ: fix: xử lý lỗi hiển thị sai thumbnail phim trên giao diện).
+  - refactor: Tối ưu hóa hoặc tổ chức lại code nhưng không làm thay đổi logic hoạt động.
+  - style: Thay đổi về mặt format, UI, CSS.
