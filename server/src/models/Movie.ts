@@ -11,6 +11,7 @@ export interface IMovie extends Document {
   rating: number;
   description?: string;
   is_trending: boolean;
+  is_active: boolean;
   slug: string;
   duration?: number;
   crew: Types.ObjectId[];
@@ -49,6 +50,7 @@ const MovieSchema = new Schema<IMovie>(
     rating: { type: Number, min: 0, max: 10, default: 0 },
     description: { type: String },
     is_trending: { type: Boolean, default: false, index: true },
+    is_active: { type: Boolean, default: true, index: true },
     slug: { type: String, required: true, unique: true, lowercase: true, trim: true },
     duration: { type: Number },
   },
