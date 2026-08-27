@@ -33,27 +33,32 @@ export const getMovies = async (req: Request, res: Response) => {
     res.status(500).json({ message: 'Server error', error });
   }
 };
-
-export const getMovieDetail = async (req: Request, res: Response) => {
+export const getPublicMovies = async (req: Request, res: Response) => {
   try {
-    // Gọi chung là identifier (có thể là slug hoặc id)
-    const { param } = req.params; 
+    const movies = await movieService.findAllPublicMovies();
 
-    //Chống lỗi TypeScript (Kiểm tra xem identifier có phải là chuỗi hợp lệ không)
-    if (typeof param !== 'string') {
+    res.status(200).json({
+      message: 'Movies retrieved successfully',
+      count: movies.length,
+      data: movies,
+    });
+  } catch (error) {
+    res.status(500).json({ message: 'Server error', error });
+  }
+};
+
+export const getPublicMovieDetail = async (req: Request, res: Response) => {
+  try {
+    const { slug } = req.params;
+
+    if (typeof slug !== 'string') {
       return res.status(400).json({
         status: 'fail',
-        message: 'Identifier không hợp lệ',
+        message: 'Slug không hợp lệ',
       });
     }
 
-    let movie;
-
-    if (isValidObjectId(param)) {
-      movie = await movieService.findMovieById(param);
-    } else {
-      movie = await movieService.findMovieBySlug(param);
-    }
+    const movie = await movieService.findMovieBySlug(slug);
 
     if (!movie) {
       return res.status(404).json({
@@ -61,6 +66,36 @@ export const getMovieDetail = async (req: Request, res: Response) => {
         message: 'Không tìm thấy bộ phim này',
       });
     }
+
+    return res.status(200).json({
+      status: 'success',
+      data: movie,
+    });
+
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: 'Lỗi server' });
+  }
+};
+
+export const getMovieDetail = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+
+    if (typeof id !== 'string' || !isValidObjectId(id)) {
+      return res.status(400).json({
+        status: 'fail',
+        message: 'Movie ID không hợp lệ',
+      });
+    }
+
+    const movie = await movieService.findMovieById(id);
+
+    if (!movie)
+      return res.status(404).json({
+        status: 'fail',
+        message: 'Không tìm thấy bộ phim này',
+      });
 
     return res.status(200).json({
       status: 'success',
@@ -76,7 +111,7 @@ export const deleteMovie = async (req: Request, res: Response) => {
     const { id } = req.params;
 
     //Chống lỗi TypeScript (Kiểm tra xem tính hợp lệ của movieId)
-    if ( typeof id !== 'string' || !isValidObjectId(id)) {
+    if (typeof id !== 'string' || !isValidObjectId(id)) {
       return res.status(400).json({
         status: 'fail',
         message: 'movieId không hợp lệ',
@@ -86,7 +121,7 @@ export const deleteMovie = async (req: Request, res: Response) => {
     const deletedMMovie = await movieService.deleteMovieByID(id);
 
     //vì delete thành công sẽ return lại thông tin movie đã xóa nên kiểm tra
-    if(!deletedMMovie){
+    if (!deletedMMovie) {
       return res.status(400).json({
         status: 'fail',
         message: 'Không tìm thấy bộ phim này hoặc đã bị xóa',
@@ -94,7 +129,6 @@ export const deleteMovie = async (req: Request, res: Response) => {
     }
 
     res.status(204).send();
-    
   } catch (error) {
     res.status(500).json({ message: 'Server error', error });
   }
