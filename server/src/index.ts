@@ -4,9 +4,10 @@ import type { Request, Response, NextFunction } from 'express';
 import http from 'http';
 import mongoose from 'mongoose';
 
-// Import cấu hình & routes (ví dụ sau này)
-// import movieRoutes from './routes/movie.route.js';
-// import authRoutes from './routes/authRoutes';
+import './models/Index.js'
+
+// Import "Tổng đài viên" chứa tất cả routes của phiên bản v1
+import rootRouter from './routes/index.route.js'; 
 
 const app = express();
 const server = http.createServer(app);
@@ -35,13 +36,10 @@ app.use(express.urlencoded({ extended: true }));
       res.send('BongPhim Server API is running!');
     });
 
-    app.get('/trang-chu', (req: Request, res: Response) => {
-      res.status(204).end();
-    });
-
-    // 3. Đăng ký các Module Routes
-    // app.use('/api/v1/auth', authRoutes);
-    // app.use('/api/v1/movies', movieRoutes);
+    // ==========================================
+    // 3. ĐĂNG KÝ MODULE ROUTES VỚI PHIÊN BẢN V1
+    // ==========================================
+    app.use('/api/v1', rootRouter); 
 
     // 4. Global Error Handler Middleware (Xử lý lỗi tập trung)
     app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
