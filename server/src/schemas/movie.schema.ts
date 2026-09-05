@@ -53,6 +53,8 @@ const baseMovieBody = z.object({
 
   description: z.string().trim().optional(),
 
+  slug: z.string().trim().min(1, 'Slug không được để trống'),
+
   // Zod .positive() đã bao hàm điều kiện duration > 0 nếu user có truyền vào
   duration: z.number().positive('Thời lượng phim phải lớn hơn 0').optional(),
 });
@@ -78,6 +80,6 @@ export const updateMovieSchema = z.object({
   body: baseMovieBody.partial(),
 });
 
-// Xuất type DTO để dùng trong Controller
-export type CreateMovieInput = z.infer<typeof createMovieBody>;
-export type UpdateMovieInput = z.infer<typeof updateMovieSchema>['body'];
+// // Xuất type DTO để dùng trong Controller
+// export type CreateMovieInput = z.infer<typeof createMovieBody>;
+// export type UpdateMovieInput = z.infer<typeof updateMovieSchema>['body'];
