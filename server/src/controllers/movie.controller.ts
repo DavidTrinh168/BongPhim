@@ -1,6 +1,6 @@
 import type { Request, Response } from 'express';
 import * as movieService from '../services/movie.service.js';
-import { isValidObjectId } from 'mongoose';
+import { isValidStringParam } from '../utils/helper.js'
 
 export const createrMovie = async (req: Request, res: Response) => {
   try {
@@ -51,7 +51,7 @@ export const getPublicMovieDetail = async (req: Request, res: Response) => {
   try {
     const { slug } = req.params;
 
-    if (typeof slug !== 'string') {
+    if (!isValidStringParam(slug, 'slug')) {
       return res.status(400).json({
         status: 'fail',
         message: 'Slug không hợp lệ',
@@ -82,7 +82,7 @@ export const getMovieDetail = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
 
-    if (typeof id !== 'string' || !isValidObjectId(id)) {
+    if (!isValidStringParam(id, 'id')) {
       return res.status(400).json({
         status: 'fail',
         message: 'Movie ID không hợp lệ',
@@ -106,12 +106,45 @@ export const getMovieDetail = async (req: Request, res: Response) => {
   } 
 };
 
+export const updateMovie = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const movieData = req.body;
+
+    if (!isValidStringParam(id, 'id')) {
+      return res.status(400).json({
+        status: 'fail',
+        message: 'Movie ID không hợp lệ',
+      });
+    };
+
+    const updatedMovie = await movieService.updateMovie(id, movieData);
+
+    // Xử lý trường hợp phim không tồn tại
+    if (!updatedMovie) {
+      return res.status(404).json({
+        status: 'fail',
+        message: 'Không tìm thấy bộ phim này để cập nhật',
+      });
+    }
+
+    res.status(200).json({
+      message: 'Movie or Series updated successfully',
+      data: updatedMovie,
+    });
+  } catch (error) {
+    if (error && (error as any).code === 11000) {
+      return res.status(409).json({ message: 'Title or Slug already exists.' });
+    }
+    res.status(500).json({ message: 'Server error', error });
+  }
+};
+
 export const deleteMovie = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
 
-    //Chống lỗi TypeScript (Kiểm tra xem tính hợp lệ của movieId)
-    if (typeof id !== 'string' || !isValidObjectId(id)) {
+    if (!isValidStringParam(id, 'id')) {
       return res.status(400).json({
         status: 'fail',
         message: 'movieId không hợp lệ',

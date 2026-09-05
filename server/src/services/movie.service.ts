@@ -39,8 +39,9 @@ export const findMovieBySlug = async (slugPara: string) => {
 };
 
 export const updateMovie = async (id: string, movieData: Partial<IMovie>) => {
-  const movies = await Movie.updateOne({ _id: id }, movieData);
-  return movies;
+// Dùng findByIdAndUpdate và truyền { new: true } để Mongoose trả về document SAU khi đã update
+  const updatedMovie = await Movie.findByIdAndUpdate( id, movieData, { new: true, runValidators: true } ); // runValidators đảm bảo Mongoose kiểm tra lại rule trong Schema  
+  return updatedMovie;
 };
 
 export const deleteMovieByID = async (id: string) => {
