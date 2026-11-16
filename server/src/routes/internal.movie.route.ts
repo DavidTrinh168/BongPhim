@@ -8,7 +8,7 @@ import { verifyToken, authorizeRole } from '../middlewares/auth.middleware.js';
 
 const internalMovieRouter: Router = Router();
 
-internalMovieRouter.post('/movie', verifyToken, authorizeRole(['admin', 'moderator']), validate(createMovieSchema), createrMovie);
+internalMovieRouter.post('/', verifyToken, authorizeRole(['admin', 'moderator']), validate(createMovieSchema), createrMovie);
 internalMovieRouter.get('/all', verifyToken, authorizeRole(['admin', 'moderator']), getMovies);
 internalMovieRouter.get('/:id', verifyToken, authorizeRole(['admin', 'moderator']), getMovieDetail);
 internalMovieRouter.delete('/:id', verifyToken, authorizeRole(['admin', 'moderator']), deleteMovie);
