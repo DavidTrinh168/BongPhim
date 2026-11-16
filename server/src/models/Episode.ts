@@ -6,6 +6,7 @@ export interface IEpisode extends Document {
   season_number: number; // Số mùa (ví dụ: 1, 2, 3...)
   title?: string; // Tên tập phim (tùy chọn)
   video_url: string; // Link video của tập phim
+  is_active: boolean;
   release_date: Date;
 }
 
@@ -16,6 +17,7 @@ const episodeSchema = new Schema<IEpisode>(
     season_number: { type: Number, required: true },
     title: { type: String, trim: true },
     video_url: { type: String, required: true },
+    is_active: { type: Boolean, default: true, index: true },
     release_date: { type: Date, default: Date.now },
   },
   { timestamps: true },
