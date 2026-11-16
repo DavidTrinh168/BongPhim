@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import publicMovieRouter from './public.movie.route.js';
 import internalMovieRouter from './internal.movie.route.js'
+import internalEpisodeRouter from './internal.episode.route.js'
 // import authRouter from './auth.route.js';
 // import userRouter from './user.route.js';
 
@@ -18,8 +19,9 @@ rootRouter.use('/public/movies', publicMovieRouter);
 // ==========================================
 // 2. ADMIN ROUTES (Dành cho Quản trị viên trên Web Admin)
 // ==========================================
-// Đường dẫn thực tế sẽ là: /api/v1/admin/movies/
+// Đường dẫn thực tế sẽ là: /api/v1/cms/movies/
 rootRouter.use('/cms/movies', internalMovieRouter);
+rootRouter.use('/cms/episodes', internalEpisodeRouter);
 
 // rootRouter.use('/cms/users', userRouter);
 
