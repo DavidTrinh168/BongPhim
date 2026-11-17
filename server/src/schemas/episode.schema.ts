@@ -32,6 +32,8 @@ const baseEpisodeBody = z.object({
     })
     .url('Video URL không đúng định dạng link'),
 
+    is_active: z.boolean().optional(),
+
   // Sử dụng z.coerce.date() vì Frontend thường gửi ngày tháng lên dưới dạng chuỗi ISO string. 
   // Coerce sẽ tự động ép kiểu chuỗi đó về Date object hợp lệ trước khi pass qua Controller.
   release_date: z.coerce
@@ -43,12 +45,12 @@ const baseEpisodeBody = z.object({
 
 // Wrap vào object { body: ... } để đồng bộ với req của Express
 export const createEpisodeSchema = z.object({
-  body: baseEpisodeBody,
+  body: baseEpisodeBody.strict(),
 });
 
 // Update schema: Tái sử dụng lại toàn bộ rule, nhưng cho phép các trường đều là optional
 export const updateEpisodeSchema = z.object({
-  body: baseEpisodeBody.partial(),
+  body: baseEpisodeBody.partial().strict(),
 });
 
 // Xuất type DTO để dùng ép kiểu (Type Casting) trong Controller

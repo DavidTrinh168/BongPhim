@@ -30,6 +30,10 @@ const baseMovieBody = z.object({
 
   trailer_url: z.url('Trailer URL không đúng định dạng link').optional(),
 
+  is_active: z.boolean().optional(),
+
+  is_trending: z.boolean().optional(),
+
   year: z
     .number('Năm phát hành không được trống')
     .int('Năm phải là số nguyên')
@@ -72,12 +76,12 @@ const createMovieBody = baseMovieBody.superRefine((data, ctx) => {
 
 // Wrap vào object { body: ... } để đồng bộ với req của Express
 export const createMovieSchema = z.object({
-  body: createMovieBody,
+  body: createMovieBody.strict(),
 });
 
 // Update schema: Tái sử dụng lại toàn bộ rule, nhưng chuyển thành optional
 export const updateMovieSchema = z.object({
-  body: baseMovieBody.partial(),
+  body: baseMovieBody.partial().strict(),
 });
 
 // // Xuất type DTO để dùng trong Controller
