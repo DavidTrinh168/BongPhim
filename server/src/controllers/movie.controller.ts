@@ -151,10 +151,10 @@ export const deleteMovie = async (req: Request, res: Response) => {
       });
     }
 
-    const deletedMMovie = await movieService.deleteMovieByID(id);
+    const deletedMovie = await movieService.deleteMovieByID(id);
 
     //vì delete thành công sẽ return lại thông tin movie đã xóa nên kiểm tra
-    if (!deletedMMovie) {
+    if (!deletedMovie) {
       return res.status(400).json({
         status: 'fail',
         message: 'Không tìm thấy bộ phim này hoặc đã bị xóa',

@@ -141,25 +141,32 @@ Nhánh 1: feature/setup-core-models (Gom hết các Model cơ bản)
 Mục tiêu: Dựng xong toàn bộ hình thù CSDL ban đầu để các tính năng sau có cái mà dùng.
 •	Tạo Model Movie, Genre, Country, Episode.
 •	Tạo script seedDataScript.ts.
-•	Xong xuôi $\rightarrow$ Tạo Pull Request merge vào main.
+•	Xong xuôi => Tạo Pull Request merge vào main.
 
 Nhánh 2: feature/movie-management (Module Quản lý Phim)
 Mục tiêu: Làm trọn vẹn từ A-Z tính năng thêm, sửa, xóa phim.
 •	Viết Schema validation (Zod).
 •	Viết MovieService (bao gồm cả Cascade Delete).
 •	Viết MovieController và Route /api/movies.
-•	Test chạy ngon lành $\rightarrow$ Tạo Pull Request merge vào main.
+•	Test chạy ngon lành => Tạo Pull Request merge vào main.
 
-🟢 Nhánh 3: feature/auth-and-roles (Module Xác thực & Phân quyền)
+🟢 Nhánh 3: feature/episode-management (Module Quản lý tập Phim)
+Mục tiêu: Làm trọn vẹn từ A-Z tính năng thêm, sửa, xóa tập phim.
+•	Viết Schema validation (Zod).22
+•	Viết EpisodeService.
+•	Viết EpisodeController và route liên quan.
+•	Test chạy ngon lành => Tạo Pull Request merge vào main.
+
+🟢 Nhánh 4: feature/auth-and-roles (Module Xác thực & Phân quyền)
 Mục tiêu: Tích hợp Login/Register và phân quyền Admin.
 •	Tạo Model User.
 •	Viết auth.service.ts (JWT, Hash password).
 •	Viết middleware verifyToken và checkAdmin.
-•	Xong xuôi $\rightarrow$ Tạo Pull Request merge vào main.
-🟢 Nhánh 4: feature/user-managerment
-🟢 Nhánh 4: feature/streaming
-🟢 Nhánh 5: feature/social-feature (optional)
-🟢 Nhánh 6: feature/subcribtion-and-payment
+•	Xong xuôi => Tạo Pull Request merge vào main.
+🟢 Nhánh 5: feature/user-managerment
+🟢 Nhánh 6: feature/streaming
+🟢 Nhánh 7: feature/social-feature (optional)
+🟢 Nhánh 8: feature/subcribtion-and-payment
 
 --------------------------------- TO DO ---------------------------------
 1. Yêu cầu Nghiệp vụ (Business Rules)
